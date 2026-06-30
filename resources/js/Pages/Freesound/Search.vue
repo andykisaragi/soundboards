@@ -23,23 +23,6 @@ const form = useForm({
     filter: props.filters.filter || '',
 })
 
-const currentPage = computed(() => {
-    return props.results?.page || props.filters.page || 1
-})
-
-const visiblePages = computed(() => {
-    if (!props.results?.count) return []
-    const totalPages = Math.ceil(props.results.count / form.page_size)
-    const pages = []
-    const start = Math.max(1, currentPage.value - 2)
-    const end = Math.min(totalPages, currentPage.value + 2)
-    for (let i = start; i <= end; i++) {
-        pages.push(i)
-    }
-    return pages
-})
-
-
 const search = async () => {
     hasSearched.value = true
     searching.value = true
@@ -74,15 +57,6 @@ watch(searching, (isSearching) => {
         }
     }
 })
-const paginateUrl = (page) => {
-    return route('freesound.search', {
-        query: form.query,
-        page,
-        page_size: form.page_size,
-        sort: form.sort,
-        filter: form.filter || undefined,
-    })
-}
 
 const pickRandom = (arr, count) => {
     if (count >= arr.length) return [...arr]
@@ -100,7 +74,6 @@ onUnmounted(() => {
         clearInterval(intervalId)
     }
 })
-
 
 /**
  * Prompt for a title and save the current results as a SoundBoard.

@@ -9,7 +9,7 @@ const props = defineProps({
 
 const { loadBoard } = inject('loadBoard')
 
-function deleteBoard(boardId) {
+const deleteBoard = (boardId) => {
     if (!confirm('Delete this SoundBoard?')) return
 
     router.delete(route('freesound.soundboards.destroy', boardId), {
@@ -18,8 +18,7 @@ function deleteBoard(boardId) {
     })
 }
 
-
-function formatDate(dateStr) {
+const formatDate = (dateStr) => {
     if (!dateStr) return ''
     return new Date(dateStr).toLocaleDateString('en-GB', {
         day: 'numeric',
@@ -27,6 +26,7 @@ function formatDate(dateStr) {
         year: 'numeric',
     })
 }
+
 </script>
 <template>
 <aside class="w-80 flex-shrink-0">
