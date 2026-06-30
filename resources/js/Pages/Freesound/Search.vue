@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onUnmounted, provide, ref, watch} from 'vue'
+import { onUnmounted, provide, ref, watch} from 'vue'
 import {Head, router, useForm} from '@inertiajs/vue3'
 import Layout from '@/Layouts/Layout.vue'
 import Sound from "../../components/Sound.vue";
@@ -82,7 +82,6 @@ const promptSaveBoard = () => {
     const title = window.prompt('Enter a title for this SoundBoard:')
     if (!title || !title.trim()) return
 
-    console.log('title ' + title)
     saving.value = true
 
     router.post(route('freesound.soundboards.store'), {
@@ -100,12 +99,9 @@ const promptSaveBoard = () => {
         preserveScroll: true,
         onSuccess: () => {
             saving.value = false
-            console.log('saved')
-            alert('savced')
         },
         onError: (errors) => {
             saving.value = false
-            console.log('error')
             console.error('Failed to save SoundBoard:', errors)
             alert('Failed to save SoundBoard: ' + (errors.title || errors.sounds || 'Unknown error'))
         },
@@ -140,9 +136,6 @@ provide('loadBoard', { loadBoard })
     <Layout class="font-mono">
         <Head title="Random Sound Board" />
 
-        <h1 class="mb-4">Random Sound Board</h1>
-
-        <!-- Errors -->
         <div v-if="$page.props.errors?.api" class="alert alert-danger">
             {{ $page.props.errors.api }}
         </div>
@@ -211,15 +204,5 @@ provide('loadBoard', { loadBoard })
                 <SavedBoards :boards="boards" />
             </div>
         </div>
-
-        <!-- Empty State -->
-
-
-
     </Layout>
 </template>
-
-
-
-<style scoped>
-</style>
