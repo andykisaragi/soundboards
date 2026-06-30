@@ -1,6 +1,6 @@
 <script setup>
 import {computed, onUnmounted, provide, ref, watch} from 'vue'
-import {Head, Link, router, useForm} from '@inertiajs/vue3'
+import {Head, router, useForm} from '@inertiajs/vue3'
 import Layout from '@/Layouts/Layout.vue'
 import Sound from "../../components/Sound.vue";
 import SavedBoards from "../../components/SavedBoards.vue";
