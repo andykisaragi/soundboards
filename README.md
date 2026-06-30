@@ -2,6 +2,12 @@
 
 Laravel / Inertia / Vue app. Search the Freesound API & populate a grid of 9 clickable sounds. Save & load soundboards.
 
+## How
+
+npm & composer install
+get Freesound API key https://freesound.org/docs/api/authentication.html
+copy .env.example to .env and populate FREESOUND_API_KEY
+
 ## Why
 
 I chose the Freesound API because I've had an idea for a while to use it's geospatial data for a project to generate soundscapes based on the position of the ISS. 
