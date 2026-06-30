@@ -1,17 +1,9 @@
 <script setup>
-import {Link} from "@inertiajs/vue3";
 import AudioPlayer from "./AudioPlayer.vue";
 
 const props = defineProps({
     sound: { type: Object, default: null },
 })
-
-const formatDuration = (seconds) => {
-    if (!seconds) return 'N/A'
-    const mins = Math.floor(seconds / 60)
-    const secs = Math.floor(seconds % 60)
-    return `${mins}:${secs.toString().padStart(2, '0')}`
-}
 
 </script>
 
