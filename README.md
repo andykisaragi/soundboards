@@ -5,7 +5,9 @@ Laravel / Inertia / Vue app. Search the Freesound API & populate a grid of 9 cli
 ## How
 
 npm & composer install
+
 get Freesound API key https://freesound.org/docs/api/authentication.html
+
 copy .env.example to .env and populate FREESOUND_API_KEY
 
 ## Why
