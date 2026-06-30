@@ -52,8 +52,6 @@ class FreesoundSearchController extends Controller
                 return ['error' => true, 'message' => $response->json('detail') ?? 'API error'];
             }
 
-
-
             return $response->json();
         });
 
@@ -61,71 +59,12 @@ class FreesoundSearchController extends Controller
             return redirect()->back()->withErrors(['api' => $data['message']]);
         }
 
-
-//
-//        $keys = array_rand($data['results'], 9);
-//        $randomResults = [];
-//        foreach ($keys as $key) {
-//            $randomResults[$key] = $data['results'][$key];
-//        }
-//        $data['results'] = $randomResults;
-
         $boards = SoundBoard::with('sounds')->latest()->get();
 
         return Inertia::render('Freesound/Search', [
             'results' => $data,
             'filters' => $request->only(['query', 'sort', 'page_size', 'filter', 'page']),
             'boards'  => $boards,
-        ]);
-    }
-
-    /**
-     * Show a single sound's details.
-     */
-    public function show(int $soundId)
-    {
-        $fields = 'id,name,tags,username,license,duration,previews,description,avg_rating,num_downloads,type,images,url,download,geotag,created';
-
-        $cacheKey = "freesound_sound_{$soundId}";
-
-        $sound = Cache::remember($cacheKey, 600, function () use ($soundId, $fields) {
-            $response = Http::withHeaders([
-                'Authorization' => 'Token ' . $this->apiKey,
-            ])->get($this->baseUrl . "/sounds/{$soundId}/", [
-                'fields' => $fields,
-            ]);
-
-            if ($response->failed()) {
-                return null;
-            }
-
-            return $response->json();
-        });
-
-        if (!$sound) {
-            return redirect()->route('freesound.index')
-                ->withErrors(['api' => 'Sound not found']);
-        }
-
-        // Also fetch similar sounds
-        $similar = Cache::remember("freesound_similar_{$soundId}", 600, function () use ($soundId) {
-            $response = Http::withHeaders([
-                'Authorization' => 'Token ' . $this->apiKey,
-            ])->get($this->baseUrl . "/sounds/{$soundId}/similar/", [
-                'page_size' => 8,
-                'fields'    => 'id,name,tags,username,duration,previews,images',
-            ]);
-
-            if ($response->failed()) {
-                return [];
-            }
-
-            return $response->json('results') ?? [];
-        });
-
-        return Inertia::render('Freesound/Show', [
-            'sound'   => $sound,
-            'similar' => $similar,
         ]);
     }
 
@@ -144,10 +83,6 @@ class FreesoundSearchController extends Controller
         $params['filter'] = 'duration:[0 TO 5]';
         if ($filter = $request->input('filter')) {
             $params['filter'] = $filter;
-        }
-
-        if ($request->boolean('group_by_pack')) {
-            $params['group_by_pack'] = 1;
         }
 
         return array_filter($params, fn($value) => $value !== '' && $value !== null);
@@ -171,7 +106,6 @@ class FreesoundSearchController extends Controller
             'search_term' => $validated['search_term'],
         ]);
 
-        // addSounds will find-or-create each Sound and attach to the board
         $board->addSounds($validated['sounds']);
 
         return redirect()->back()->with(
@@ -186,6 +120,5 @@ class FreesoundSearchController extends Controller
 
         return redirect()->back()->with('success', 'SoundBoard deleted.');
     }
-
 
 }
